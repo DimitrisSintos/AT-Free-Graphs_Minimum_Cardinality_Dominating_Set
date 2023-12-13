@@ -35,7 +35,7 @@ def main(argv):
         at_free_graph = GraphParser.parse_graph_from_file(file_path)
 
     # at_free_graph.show()
-    algorithm = PolynomialTimeAlgorithm(at_free_graph)
+    algorithm = PolynomialTimeAlgorithm(at_free_graph,5)
     algorithm.run()
 
 

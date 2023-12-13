@@ -17,6 +17,8 @@ class Graph:
             self.adjacency_list[u].add(v)
             self.adjacency_list[v].add(u)
             
+        domination_set = set()
+            
     def bfs_levels(self, source):
         source = str(source)
         if source not in self.vertices:
@@ -26,7 +28,6 @@ class Graph:
         level = {vertex: None for vertex in self.vertices}
         queue = []
 
-        # Start from the source
         visited[source] = True
         level[source] = 0
         queue.append(source)
@@ -49,24 +50,18 @@ class Graph:
 
         return levels
     
-   
-
-    def delete_vertices(self, vertices_to_delete):
-        """
-        Delete a set of vertices from the graph.
-        
-        :param vertices_to_delete: set of vertices to delete
-        :return: A new Graph instance with the vertices deleted.
-        """
-        new_vertices = set(self.vertices - vertices_to_delete)
-        print('new_vertices:', new_vertices)
-        new_edges = set(
-            e for e in self.edges if e[0] not in vertices_to_delete and e[1] not in vertices_to_delete)  # TODO
-        print("new_edges:", new_edges)
-        return Graph(len(new_vertices), len(new_edges), new_edges, new_vertices)
-
-    def edge_exists(self, u, v):
-        return (u, v) in self.edges or (v, u) in self.edges
+    def closed_neighborhood(self, vertex):
+        return {vertex}.union(self.adjacency_list[vertex])
+    
+    def closed_neighborhood_of_set(self, vertex_set):
+        print('vertex_set:', vertex_set)
+        closed_neighborhood = set()
+        for vertex in vertex_set:
+            # Ensure vertex is in the correct format (e.g., string)
+            vertex_str = str(vertex)
+            closed_neighborhood = closed_neighborhood.union(self.closed_neighborhood(vertex_str))
+        return closed_neighborhood
+    
 
     def copy(self):
         return Graph(self.num_of_vertices, self.num_of_edges, self.edges, self.vertices)
@@ -77,7 +72,11 @@ class Graph:
         net = Network(height="500px", width="100%", bgcolor="#222222", font_color="white")
 
         for vertex in self.vertices:
-            net.add_node(vertex)
+            if vertex in self.domination_set:
+                net.add_node(vertex, color="red")
+            else:
+                net.add_node(vertex)
+            
 
         for edge in self.edges:
             u, v = edge
