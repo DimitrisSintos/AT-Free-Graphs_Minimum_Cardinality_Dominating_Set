@@ -21,43 +21,48 @@ class PolynomialTimeAlgorithm:
             l = len(H) - 1 
             i = 1
             
-            print("BFS Levels of:",vertex,":\n" ,H)
+            # print("BFS Levels of:",vertex,":\n" ,H)
             A1 = self.initialize_queue(vertex)
-            print("Init queue of:",vertex,":\n" ,A1)
+            # print("Init queue of:",vertex,":\n" ,A1)
             A = { i : A1}
 
             while A and i < l:
                 i = i + 1
                 A[i] = []
                 
-                print("A:", A)
+                # print("\nA:", A)
                 for triple in A[i-1]:
-                    print("Iner loop triple:", triple)
+                    # print("Iner loop triple:", triple)
                     S = triple[0]
                     S_accent = triple[1]
                     val_S_accent = triple[2]
                     r = len(H[i])
-                    for U in combinations(H,r):
-                        print("Inner loop U:", U)
-                        if len( S | set(U) ) <= self.weight:
-                            print("U that make it:", U)
-                            closed_neighborhood_of_S_and_U = self.graph.closed_neighborhood_of_set(S | set(U))
-                            if closed_neighborhood_of_S_and_U.issuperset(H):
-                                print("H is subset of closed_neighborhood_of_S_and_U")
-                                R = ( S | set(U) ) - H[i-2]
-                                R_accent = S_accent
-                                val_R_accent = val_S_accent + len(U)
-                                if not any(triple[0] == R for triple in A[i]):
-                                    A[i].append((R, R_accent, val_R_accent))
-                                #IF there is a triple (P; P_accent ; val_P_accent) in Ai such that P = R AND val_R_accent < val_P_accent
-                                #THEN replace (P; P_accent ; val_P_accent) by (R; R_accent ; val_R_accent) in Ai ;
-                                for index, triple in enumerate(A[i]):
-                                    if triple[0] == R and val_R_accent < triple[2]:
-                                        A[i][index] = (R, R_accent, val_R_accent)
+                    #For all U ⊆ H[i]   such that   |S ∪ U| ≤ w
+                    for r in range(1, len(H[i]) + 1):
+                        for U in combinations(H[i], r):
+                            if len(S | set(U)) <= self.weight:
+                                # print("Inner loop U:", U)
+                                closed_neighborhood_of_S_and_U = self.graph.closed_neighborhood_of_set(S | set(U))
+                                # print("closed_neighborhood_of_S_and_U:", closed_neighborhood_of_S_and_U)
+                                # print("H[i-1]:", H[i-1])
+                                if closed_neighborhood_of_S_and_U.issuperset(H[i-1]):
+                                    R = ( S | set(U) ) - H[i-2]
+                                    R_accent = S_accent | set(U)
+                                    val_R_accent = val_S_accent + len(U)
+                                    # print("R:", (R, R_accent, val_R_accent))
+                                    if not any(triple[0] == R for triple in A[i]):
+                                        A[i].append((R, R_accent, val_R_accent))
+                                        # print("A[i] after R appended:", A[i])
+                                    #IF there is a triple (P; P_accent ; val_P_accent) in Ai such that P = R AND val_R_accent < val_P_accent
+                                    #THEN replace (P; P_accent ; val_P_accent) by (R; R_accent ; val_R_accent) in Ai ;
+                                    for index, triple in enumerate(A[i]):
+                                        if triple[0] == R and val_R_accent < triple[2]:
+                                            print("\nIM HERE 2\n")
+                                            A[i][index] = (R, R_accent, val_R_accent)
             if A:
                 # Find the triple with minimum val(S') in A[l] that satisfies H[l] ⊆ N[S]
-                print("\nA[i]:", A[i-1])
-                optimal_triple = min((triple for triple in A[i-1] if set(H[i-1]).issubset(self.graph.closed_neighborhood_of_set(triple[0]))), 
+                print("\nA[l]:", A[l])
+                optimal_triple = min((triple for triple in A[l] if set(H[l]).issubset(self.graph.closed_neighborhood_of_set(triple[0]))), 
                                     key=lambda x: x[2], default=None)
                 
                 print("\noptimal_triple:", optimal_triple)

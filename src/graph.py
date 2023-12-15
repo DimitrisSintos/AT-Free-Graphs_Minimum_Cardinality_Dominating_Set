@@ -54,7 +54,6 @@ class Graph:
         return {vertex}.union(self.adjacency_list[vertex])
     
     def closed_neighborhood_of_set(self, vertex_set):
-        print('vertex_set:', vertex_set)
         closed_neighborhood = set()
         for vertex in vertex_set:
             # Ensure vertex is in the correct format (e.g., string)
