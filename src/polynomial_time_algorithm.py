@@ -1,4 +1,3 @@
-from utilities import *
 from graph import Graph
 from itertools import combinations
 
@@ -22,11 +21,14 @@ class PolynomialTimeAlgorithm:
             i = 1
             
             # print("BFS Levels of:",vertex,":\n" ,H)
+            
+            #Initialize the queue A1 to contain an ordred triple (S, S, val_S) 
+            #for all nonempty subets S of N[vertex] satisfying val_S:= |S| ≤ w
             A1 = self.initialize_queue(vertex)
             # print("Init queue of:",vertex,":\n" ,A1)
             A = { i : A1}
 
-            while A and i < l:
+            while A[i] and i < l:
                 i = i + 1
                 A[i] = []
                 
@@ -50,6 +52,8 @@ class PolynomialTimeAlgorithm:
                                     R_accent = S_accent | set(U)
                                     val_R_accent = val_S_accent + len(U)
                                     # print("R:", (R, R_accent, val_R_accent))
+                                    #IF there is no triple in Ai with first entry R
+                                    #THEN inser (R; R_accent ; val_R_accent) into Ai ;
                                     if not any(triple[0] == R for triple in A[i]):
                                         A[i].append((R, R_accent, val_R_accent))
                                         # print("A[i] after R appended:", A[i])
@@ -57,19 +61,17 @@ class PolynomialTimeAlgorithm:
                                     #THEN replace (P; P_accent ; val_P_accent) by (R; R_accent ; val_R_accent) in Ai ;
                                     for index, triple in enumerate(A[i]):
                                         if triple[0] == R and val_R_accent < triple[2]:
-                                            print("\nIM HERE 2\n")
                                             A[i][index] = (R, R_accent, val_R_accent)
-            if A:
-                # Find the triple with minimum val(S') in A[l] that satisfies H[l] ⊆ N[S]
-                print("\nA[l]:", A[l])
-                optimal_triple = min((triple for triple in A[l] if set(H[l]).issubset(self.graph.closed_neighborhood_of_set(triple[0]))), 
-                                    key=lambda x: x[2], default=None)
-                
-                print("\noptimal_triple:", optimal_triple)
-                
-                if optimal_triple and optimal_triple[2] < len(D):
-                    D = optimal_triple[1]  # Update D if a better solution is found
-                    print("########\nD is updated to:", D)
+            
+            # Find the triple with minimum val(S') in A[l] that satisfies H[l] ⊆ N[S]
+            optimal_triple = min((triple for triple in A[l] if set(H[l]).issubset(self.graph.closed_neighborhood_of_set(triple[0]))), 
+                                key=lambda x: x[2], default=None)
+            
+            print("\noptimal_triple:", optimal_triple)
+            
+            if optimal_triple and optimal_triple[2] < len(D):
+                D = optimal_triple[1]  # Update D if a better solution is found
+                print("########\nD is updated to:", D)
         
         print("THE DOMINATION SET IS:", D)
         self.graph.domination_set = D
