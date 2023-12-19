@@ -21,8 +21,6 @@ class Graph:
             
     def bfs_levels(self, source):
         source = str(source)
-        if source not in self.vertices:
-            raise ValueError(f"Vertex {source} is not in the graph")
 
         visited = {vertex: False for vertex in self.vertices}
         level = {vertex: None for vertex in self.vertices}
