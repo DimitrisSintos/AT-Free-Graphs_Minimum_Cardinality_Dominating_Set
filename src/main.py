@@ -1,6 +1,7 @@
 from graph import Graph
 from polynomial_time_algorithm import PolynomialTimeAlgorithm
 from graph_parser import GraphParser
+from brute_force import BruteForce
 import sys
 
 
@@ -37,7 +38,9 @@ def main(argv):
     # at_free_graph.show()
     algorithm = PolynomialTimeAlgorithm(at_free_graph,5)
     algorithm.run()
-
+    
+    brute_force_algorithm = BruteForce(at_free_graph)
+    print("brute_force_algorithm, minimum_domination_set_size:", brute_force_algorithm.run())
 
 if __name__ == "__main__":
     main(argv=sys.argv[1:])

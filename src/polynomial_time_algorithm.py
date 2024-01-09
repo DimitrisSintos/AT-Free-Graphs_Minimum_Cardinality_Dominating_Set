@@ -20,7 +20,7 @@ class PolynomialTimeAlgorithm:
             l = len(H) - 1 
             i = 1
             
-            # print("BFS Levels of:",vertex,":\n" ,H)
+            print("BFS Levels of:",vertex,":\n" ,H)
             
             #Initialize the queue A1 to contain an ordred triple (S, S, val_S) 
             #for all nonempty subets S of N[vertex] satisfying val_S:= |S| ≤ w
