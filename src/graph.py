@@ -16,7 +16,9 @@ class Graph:
             self.adjacency_list[u].add(v)
             self.adjacency_list[v].add(u)
             
-        domination_set = set()
+        domination_set = set() 
+        
+        
             
     def bfs_levels(self, source):
         source = str(source)
@@ -53,7 +55,6 @@ class Graph:
     def closed_neighborhood_of_set(self, vertex_set):
         closed_neighborhood = set()
         for vertex in vertex_set:
-            # Ensure vertex is in the correct format (e.g., string)
             vertex_str = str(vertex)
             closed_neighborhood = closed_neighborhood.union(self.closed_neighborhood(vertex_str))
         return closed_neighborhood

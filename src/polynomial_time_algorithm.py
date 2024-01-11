@@ -38,18 +38,18 @@ class PolynomialTimeAlgorithm:
                     S = triple[0]
                     S_accent = triple[1]
                     val_S_accent = triple[2]
-                    r = len(H[i])
                     #For all U ⊆ H[i]   such that   |S ∪ U| ≤ w
                     for r in range(1, len(H[i]) + 1):
                         for U in combinations(H[i], r):
-                            if len(S | set(U)) <= self.weight:
+                            U = set(U)
+                            if len(S | U) <= self.weight:
                                 # print("Inner loop U:", U)
-                                closed_neighborhood_of_S_and_U = self.graph.closed_neighborhood_of_set(S | set(U))
+                                closed_neighborhood_of_S_and_U = self.graph.closed_neighborhood_of_set(S | U)
                                 # print("closed_neighborhood_of_S_and_U:", closed_neighborhood_of_S_and_U)
                                 # print("H[i-1]:", H[i-1])
                                 if closed_neighborhood_of_S_and_U.issuperset(H[i-1]):
-                                    R = ( S | set(U) ) - H[i-2]
-                                    R_accent = S_accent | set(U)
+                                    R = ( S | U ) - H[i-2]
+                                    R_accent = S_accent | U
                                     val_R_accent = val_S_accent + len(U)
                                     # print("R:", (R, R_accent, val_R_accent))
                                     #IF there is no triple in Ai with first entry R

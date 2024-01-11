@@ -36,11 +36,16 @@ def main(argv):
         at_free_graph = GraphParser.parse_graph_from_file(file_path)
 
     # at_free_graph.show()
-    algorithm = PolynomialTimeAlgorithm(at_free_graph,5)
+    weight = 5
+    algorithm = PolynomialTimeAlgorithm(at_free_graph,weight)
     algorithm.run()
     
     brute_force_algorithm = BruteForce(at_free_graph)
-    print("brute_force_algorithm, minimum_domination_set_size:", brute_force_algorithm.run())
+    brute_force_domintaion_set = brute_force_algorithm.run()
+    print("brute_force_domintaion_set",brute_force_domintaion_set)
+    print("brute_force_algorithm, minimum_domination_set_size:", len(brute_force_domintaion_set))
+    at_free_graph.domination_set = brute_force_domintaion_set
+    at_free_graph.show()
 
 if __name__ == "__main__":
     main(argv=sys.argv[1:])

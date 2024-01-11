@@ -10,8 +10,9 @@ class BruteForce:
             dominated.update(self.graph.adjacency_list[vertex])
         return dominated == self.graph.vertices
 
-    def minimum_domination_set_size(self):
+    def minimum_domination_set(self):
         min_size = self.graph.num_of_vertices  # Start with the largest possible size
+        min_domination_set = set()
         for i in range(1, 2 ** self.graph.num_of_vertices):
             subset = set()
             for j in range(self.graph.num_of_vertices):
@@ -19,7 +20,10 @@ class BruteForce:
                     subset.add(str(j))
             if self.is_domination_set(subset):
                 min_size = min(min_size, len(subset))
-        return min_size
+                if min_size == len(subset):
+                    min_domination_set = subset
+                
+        return min_domination_set
     
     def run(self):
-        return self.minimum_domination_set_size()
+        return self.minimum_domination_set()
