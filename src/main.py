@@ -45,7 +45,7 @@ def main(argv):
     print("brute_force_domintaion_set",brute_force_domintaion_set)
     print("brute_force_algorithm, minimum_domination_set_size:", len(brute_force_domintaion_set))
     at_free_graph.domination_set = brute_force_domintaion_set
-    at_free_graph.show()
+    at_free_graph.show("brute_force_graph")
 
 if __name__ == "__main__":
     main(argv=sys.argv[1:])

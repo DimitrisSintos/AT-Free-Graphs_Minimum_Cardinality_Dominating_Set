@@ -19,7 +19,7 @@ class GraphParser:
             raise ValueError("The number of edges specified does not match the number of edges parsed.")
 
         if GraphParser.has_asteroidal_triple(num_of_vertices, edges):
-            raise ValueError("The graph is no AT-free.")
+            raise ValueError("The graph is no AT-free.", num_of_vertices, num_of_edges, edges)
         else:
             return Graph(num_of_vertices, num_of_edges, edges)
 

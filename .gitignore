@@ -3,4 +3,4 @@
 src/__pycache__
 output-graphs/*
 .vscode
-input-graphs
+# input-graphs
